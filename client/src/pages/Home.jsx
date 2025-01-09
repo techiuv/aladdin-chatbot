@@ -79,7 +79,7 @@ const Home = () => {
             <Title title='Aladin Chat-Bot' />
             <ProgressBar />
 
-            <section className="grid bg-dark grid-cols-[0%,100%] overflow-auto scroll-hidden sm:grid-cols-[20%,80%]">
+            <section className="grid bg-dark grid-cols-[100%,100%] overflow-auto scroll-hidden md:grid-cols-[20%,80%]">
                 <SideBar />
                 <main className='h-[100vh] relative'>
                     <header>
@@ -116,7 +116,7 @@ const Home = () => {
                             className="bg-white rounded-full text-white p-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className='h-5 w-5' viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5" strokeWidth='10px' />
+                                <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5" strokeWidth='10px' />
                             </svg>
                         </button>
                     </div>

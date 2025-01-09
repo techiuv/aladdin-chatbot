@@ -1,13 +1,16 @@
-import React, { useState, userContext } from "react";
+import React, { useState, useContext } from "react";
+import userContext from '../../context/userContext'
+
+
 
 const Modal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
-  const email = useContext(userContext)
+  // const email = useContext(userContext)
 
   return (
 
-    
+
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-75" >
       <div className="bg-tertiary w-11/12 max-w-lg rounded-2xl shadow-lg">
         {/* Modal Header */}
@@ -27,14 +30,8 @@ const Modal = ({ isOpen, onClose, title, children }) => {
         <div className="p-1 md:p-4 text-neutral-50 text-sm">{children}</div>
 
         {/* Modal Footer */}
-        <div className="flex justify-end p-2">
-          <button
-            className="px-4 py-2 bg-red-600 text-white text-sm font-normal rounded-full hover:bg-red-700"
-            onClick={onClose}
-          >
-            Log out
-          </button>
-        </div>
+        {/* <div className="flex justify-end p-2">
+        </div> */}
       </div>
     </div>
   );
