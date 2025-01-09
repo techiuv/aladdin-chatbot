@@ -1,123 +1,85 @@
 from flask import Blueprint, request, jsonify
-from flask_bcrypt import Bcrypt
-from flask_jwt_extended import (
-    create_access_token,
-    create_refresh_token,
-    jwt_required,
-    get_jwt_identity,
-)
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from config import connect_to_database
-import re
+from controllers.user_controllers import UserController
 
-bcrypt = Bcrypt()
+# Define Blueprint
 auth_bp = Blueprint('auth', __name__)
 
 # Connect to the database
-db, users_collection, _ = connect_to_database()  # Removed unused messages_collection
+db, users_collection, _ = connect_to_database()
 
-# Helper function for consistent error handling
-def handle_error(message, status_code=400):
-    return jsonify({"error": message}), status_code
+# Initialize UserController
+user_controller = UserController(users_collection)
 
-# Helper function to validate email format
-def validate_email(email):
-    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return re.match(email_regex, email)
 
-# Helper function to validate password complexity
-def validate_password(password):
-    return len(password) >= 8  # Extend this for stronger password rules
+class AuthHandler:
+    @staticmethod
+    @auth_bp.route("/register", methods=["POST"])
+    def signup():
+        """User registration."""
+        try:
+            data = request.get_json()
+            name = data.get("name")
+            email = data.get("email")
+            password = data.get("password")
 
-# Signup route
-@auth_bp.route("/register", methods=["POST"])
-def signup():
-    try:
-        data = request.get_json()
-        name = data.get("name")
-        email = data.get("email")
-        password = data.get("password")
+            if not all([name, email, password]):
+                return jsonify({"error": "Missing required fields"}), 400
 
-        if not all([name, email, password]):
-            return handle_error("Missing required fields")
+            result = user_controller.register_user(name, email, password)
+            if "error" in result:
+                return jsonify({"error": result["error"]}), 400
 
-        if not validate_email(email):
-            return handle_error("Invalid email format")
+            return jsonify({"message": result["message"]}), 201
 
-        if not validate_password(password):
-            return handle_error("Password must be at least 8 characters long")
+        except Exception as e:
+            print(f"Error during registration: {str(e)}")
+            return jsonify({"error": "Internal server error"}), 500
 
-        # Check if the user already exists
-        existing_user = users_collection.find_one({"email": email})
-        if existing_user:
-            return handle_error("User already exists")
+    @staticmethod
+    @auth_bp.route("/login", methods=["POST"])
+    def login():
+        """User login."""
+        try:
+            data = request.get_json()
+            email = data.get("email")
+            password = data.get("password")
 
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+            if not all([email, password]):
+                return jsonify({"error": "Missing required fields"}), 400
 
-        users_collection.insert_one({
-            "name": name,
-            "email": email,
-            "password": hashed_password
-        })
+            result = user_controller.login_user(email, password)
+            if "error" in result:
+                return jsonify({"error": result["error"]}), 401
 
-        return jsonify({"message": "User registered successfully"}), 201
+            return jsonify(result), 200
 
-    except Exception as e:
-        print(f"Error during registration: {str(e)}")
-        return handle_error("Internal server error", 500)
+        except Exception as e:
+            print(f"Error during login: {str(e)}")
+            return jsonify({"error": "Internal server error"}), 500
 
-# Login route
-@auth_bp.route("/login", methods=["POST"])
-def login():
-    try:
-        data = request.get_json()
-        email = data.get("email")
-        password = data.get("password")
+    @staticmethod
+    @auth_bp.route("/protected", methods=["POST"])
+    @jwt_required()
+    def protected():
+        """Protected route."""
+        try:
+            current_email = get_jwt_identity()
+            return jsonify({"msg": f"Welcome, {current_email}!"}), 200
+        except Exception as e:
+            print(f"Error in protected route: {str(e)}")
+            return jsonify({"error": "Internal server error"}), 500
 
-        if not all([email, password]):
-            return handle_error("Missing required fields")
-
-        user = users_collection.find_one({"email": email})
-        if not user or not bcrypt.check_password_hash(user["password"], password):
-            return handle_error("Invalid credentials", 401)
-
-        access_token = create_access_token(identity=email)
-        refresh_token = create_refresh_token(identity=email)
-
-        print(access_token, refresh_token)
-
-        return jsonify({
-            "message": "Login successful",
-            "user": {
-                "name": user["name"],
-                "email": user["email"],
-            },
-            "access_token": access_token,
-            "refresh_token": refresh_token
-        }), 200
-
-    except Exception as e:
-        print(f"Error during login: {str(e)}")
-        return handle_error("Internal server error", 500)
-
-# Protected route
-@auth_bp.route("/protected", methods=["POST"])
-@jwt_required()
-def protected():
-    try:
-        current_email = get_jwt_identity()
-        return jsonify({"msg": f"Welcome, {current_email}!"}), 200
-    except Exception as e:
-        print(f"Error in protected route: {str(e)}")
-        return handle_error("Internal server error", 500)
-
-# Token refresh route
-@auth_bp.route("/refresh", methods=["POST"])
-@jwt_required(refresh=True)
-def refresh():
-    try:
-        identity = get_jwt_identity()
-        access_token = create_access_token(identity=identity)
-        return jsonify({"access_token": access_token}), 200
-    except Exception as e:
-        print(f"Error during token refresh: {str(e)}")
-        return handle_error("Internal server error", 500)
+    @staticmethod
+    @auth_bp.route("/refresh", methods=["POST"])
+    @jwt_required(refresh=True)
+    def refresh():
+        """Token refresh."""
+        try:
+            identity = get_jwt_identity()
+            access_token = user_controller.create_tokens(identity)[0]
+            return jsonify({"access_token": access_token}), 200
+        except Exception as e:
+            print(f"Error during token refresh: {str(e)}")
+            return jsonify({"error": "Internal server error"}), 500
