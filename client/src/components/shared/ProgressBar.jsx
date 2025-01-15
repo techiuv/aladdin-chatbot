@@ -28,10 +28,10 @@ const ProgressBar = () => {
   if (!isVisible) return null; // Hide component completely when not visible
 
   return (
-      <div
-        className="fixed h-[2px] left-0 top-0 bg-white transition-all duration-300"
-        style={{ width: `${progress}%` }}
-      ></div>
+    <div
+      className="fixed h-[1px] left-0 top-0 bg-white transition-all duration-300"
+      style={{ width: `${progress}%` }}
+    ></div>
   );
 };
 

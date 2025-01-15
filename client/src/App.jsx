@@ -1,20 +1,22 @@
-import React, { Suspense, lazy, useState, useEffect, useContext } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { Suspense, lazy, useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import ProtectedRoute from './components/ProtectedRoute '
-import LoadingSpinner from './components/ui/LoadingSpinner';
-import userContext from './context/userContext';
+import ProtectedRoute from "./components/ProtectedRoute ";
+import LoadingSpinner from "./components/ui/LoadingSpinner";
+import userContext from "./context/userContext";
+// import AuthProvider from "./context/authContext.jsx";
+import useAuth from "./context/authContext";
 
-const Home = lazy(() => import('./pages/Home'));
-const Login = lazy(() => import('./pages/auth/Login'));
-const SignUp = lazy(() => import('./pages/auth/SignUp'));
-const Dashboard = lazy(() => import('./pages/admin/Dashboard'));
-const PageNotFound = lazy(() => import('./pages/PageNotFound'));
+const Home = lazy(() => import("./pages/Home"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const SignUp = lazy(() => import("./pages/auth/SignUp"));
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [email, setEmail] = useState(null)
+  const [email, setEmail] = useState(null);
 
   const validateUser = () => {
     const accessToken = localStorage.getItem("access_token");
@@ -27,9 +29,9 @@ function App() {
 
     try {
       const decoded = jwtDecode(accessToken);
-      const email = decoded.sub
+      const email = decoded.sub;
       setIsAuthenticated(true);
-      setEmail(email)
+      setEmail(email);
     } catch (error) {
       // console.error("Invalid or expired token:", error.message);
       setIsAuthenticated(false);
@@ -48,8 +50,7 @@ function App() {
 
   return (
     <>
-      <userContext.Provider value={email}>
-
+      {/* <AuthProvider> */}
         <Router>
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
@@ -59,22 +60,19 @@ function App() {
                 path="/"
                 element={
                   <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Home  />
+                    <userContext.Provider value={email}>
+                      <Home />
+                    </userContext.Provider>
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="/admin"
-                element={<Dashboard />}
-              />
+              <Route path="/admin" element={<Dashboard />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </Suspense>
         </Router>
-      </userContext.Provider>
-
+      {/* </AuthProvider> */}
     </>
-
   );
 }
 
