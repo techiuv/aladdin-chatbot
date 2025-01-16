@@ -1,6 +1,6 @@
 <h1 align="center">🧞‍♂️ Aladdin-Chatbot</h1>
 
-<img src=""/>
+<img src="client/pubic/ "/>
 
 ## 🚀 Overview
 
