@@ -1,11 +1,10 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
+import  { Suspense, lazy, useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import ProtectedRoute from "./components/ProtectedRoute ";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 import userContext from "./context/userContext";
-// import AuthProvider from "./context/authContext.jsx";
-import useAuth from "./context/authContext";
+
 
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/auth/Login"));
