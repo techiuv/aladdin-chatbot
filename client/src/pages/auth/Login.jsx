@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import PasswordToggler from "../../components/ui/PasswordToggler";
 import Title from "../../components/shared/Title";
-import { togglePasswordVisibility } from "../../utils/togglePassword";
 import ProgressBar from "../../components/shared/ProgressBar";
 import {
   hasAuthTokens,
@@ -116,12 +116,9 @@ const Login = () => {
                   message: "Password should ateast 8 characters",
                 },
               })}
-              className={`w-full p-4 text-sm mt-2 border border-textlight bg-transparent placeholder:text-textlight rounded-lg focus:outline-none`}
+              className={`w-full p-4 password-input text-sm mt-2 border border-textlight bg-transparent placeholder:text-textlight rounded-lg focus:outline-none`}
             />
-
-            <div>
-              <input type="checkbox" name="togglePass" /> show password
-            </div>
+            <PasswordToggler inputClass="password-input" />
 
             {errors.password && (
               <p className="text-red-500 text-sm my-2 font-normal">

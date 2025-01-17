@@ -1,9 +1,8 @@
-import React from 'react'
+import { useState } from "react";
 
 const CheckBox = () => {
-  return (
-    <div>CheckBox</div>
-  )
-}
+  const [checked, setChecked] = useState(false);
+  return <input type="checkbox" name="" id="" />;
+};
 
-export default CheckBox
+export default CheckBox;

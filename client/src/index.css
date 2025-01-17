@@ -2,14 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Hide scrollbar but still allow scrolling */
-.scroll-hidden {
-    overflow: hidden;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+/* For webkit-based browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+  height: 12px; /* Height of the scrollbar for horizontal scrollbars */
 }
 
-.scroll-hidden::-webkit-scrollbar {
-    display: none;
+::-webkit-scrollbar-track {
+  background: #262525; /* Background of the scrollbar track */
 }
 
+::-webkit-scrollbar-thumb {
+  background: #2c2b2b;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6f6969; /* Hover effect */
+}
+
+/* Optional: Customize the scrollbar corner for resizable elements */
+::-webkit-scrollbar-corner {
+  background: transparent; /* Corner styling */
+}
+
+/* For Firefox */

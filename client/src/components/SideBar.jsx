@@ -9,44 +9,44 @@ const SideBar = () => {
 
   const email = useContext(userContext);
 
-  const fetchChats = async () => {
-    setLoading(true);
-    setError(null); // Clear previous error state before fetching
+  // const fetchChats = async () => {
+  //   setLoading(true);
+  //   setError(null); // Clear previous error state before fetching
 
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/api/history`,
-        { params: { email } }
-      );
+  //   try {
+  //     const response = await axios.get(
+  //       `${import.meta.env.VITE_SERVER_URL}/api/history`,
+  //       { params: { email } }
+  //     );
 
-      if (Array.isArray(response.data)) {
-        // Prevent duplicate entries
-        setChats((prevChats) => {
-          const newChats = response.data.filter(
-            (chat) =>
-              !prevChats.some(
-                (prevChat) => prevChat.id === chat.id // Assuming `id` uniquely identifies each chat
-              )
-          );
-          return [...prevChats, ...newChats];
-        });
-      } else {
-        throw new Error("Unexpected response format.");
-      }
-    } catch (err) {
-      setError(
-        err.message || "Failed to fetch chat history. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     if (Array.isArray(response.data)) {
+  //       // Prevent duplicate entries
+  //       setChats((prevChats) => {
+  //         const newChats = response.data.filter(
+  //           (chat) =>
+  //             !prevChats.some(
+  //               (prevChat) => prevChat.id === chat.id // Assuming `id` uniquely identifies each chat
+  //             )
+  //         );
+  //         return [...prevChats, ...newChats];
+  //       });
+  //     } else {
+  //       throw new Error("Unexpected response format.");
+  //     }
+  //   } catch (err) {
+  //     setError(
+  //       err.message || "Failed to fetch chat history. Please try again."
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (email) {
-      fetchChats();
-    }
-  }, [email]);
+  // useEffect(() => {
+  //   if (email) {
+  //     fetchChats();
+  //   }
+  // }, [email]);
 
   return (
     <aside className="hidden md:flex flex-col items-center justify-between bg-secondary w-full text-white h-screen">

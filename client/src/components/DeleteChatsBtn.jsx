@@ -1,14 +1,15 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import Button from "./ui/Button";
 import userContext from "../context/userContext";
 
 const DeleteChatsBtn = () => {
   const userEmail = useContext(userContext);
+  const [loading, setLoading] = useState(false);
 
   const deleteChats = async () => {
+    setLoading(true);
     if (!userEmail) {
-      // console.error("User email is not available");
       return;
     }
 
@@ -19,13 +20,20 @@ const DeleteChatsBtn = () => {
           data: { email: userEmail },
         }
       );
-      // console.log("Chats deleted successfully:", response.data);
     } catch (error) {
-      // console.error("Failed to delete chats:", error);
+    } finally {
+      setLoading(false);
+      window.location.reload();
     }
   };
 
-  return <Button button="Delete Chats" handleEvent={deleteChats} />;
+  return (
+    <Button
+      button="Delete Chats"
+      handleEvent={deleteChats}
+      isDisabled={loading}
+    />
+  );
 };
 
 export default DeleteChatsBtn;

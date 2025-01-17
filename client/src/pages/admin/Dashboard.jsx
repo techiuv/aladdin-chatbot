@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import PasswordToggler from "../../components/ui/PasswordToggler";
 import Title from "../../components/shared/Title";
 import ProgressBar from "../../components/shared/ProgressBar";
 
@@ -70,10 +71,13 @@ const Dashboard = () => {
 
             <input
               type="password"
-              className="w-full p-4 my-2 text-sm  border border-textlight bg-transparent placeholder:text-textlight rounded-lg focus:outline-none"
+              className="w-full p-4 my-2 password-input text-sm  border border-textlight bg-transparent placeholder:text-textlight rounded-lg focus:outline-none"
               placeholder="Enter password"
               {...register("password", { required: "Password is required" })}
             />
+
+            <PasswordToggler inputClass="password-input" />
+
             {errors.password && (
               <p className="text-red-500 text-sm  font-normal">
                 {errors.password.message}
