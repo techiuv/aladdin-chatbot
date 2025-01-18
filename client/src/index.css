@@ -9,7 +9,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #262525; /* Background of the scrollbar track */
+  background: transparent; /* Background of the scrollbar track */
 }
 
 ::-webkit-scrollbar-thumb {

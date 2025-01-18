@@ -10,7 +10,8 @@ logging.basicConfig(level=logging.ERROR)
 
 class ResponseController:
     def __init__(self):
-        openai.api_key = os.getenv("OPENAI_API_KEY")
+        openai.api_key = "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"
+
 
     def generate_response(self, user_message):
         """
@@ -22,12 +23,19 @@ class ResponseController:
             elif re.search(r'\bhelp\b', user_message, re.IGNORECASE):
                 return "Sure! Let me know what you need help with."
             else:
-                # Call OpenAI API as a fallback
                 response = openai.ChatCompletion.create(
-                    model="gpt-4",
-                    messages=[{"role": "user", "content": user_message}],
-                    max_tokens=150
+                    model="gpt-3.5-turbo",  # You can use "gpt-4" for higher-quality responses
+                    messages=[
+                        {"role": "system", "content": "You are a helpful assistant."},
+                        {"role": "user", "content": user_message}
+                    ],
+                    temperature=0.7,
+                    max_tokens=256,
+                    top_p=1.0,
+                    frequency_penalty=0.0,
+                    presence_penalty=0.0
                 )
+
                 return response.choices[0].message["content"].strip()
         except Exception as e:
             logging.error("Error in generate_response", exc_info=True)
