@@ -1,6 +1,6 @@
 <h1 align="center">🧞‍♂️ Aladdin-Chatbot</h1>
 
-<img src="previews/Screenshot (44).png"/>
+<img src="previews/IMG-20250119-WA0001.jpg"/>
 
 ## 🚀 Overview
 
@@ -94,12 +94,12 @@ If you found this project helpful or interesting, please give it a star ⭐ on G
 
 ## 💻 Screenshots
 
-<img src="previews/Screenshot (45).png"/>
-<img src="previews/Screenshot (46).png"/>
-<img src="previews/Screenshot (47).png"/>
-<img src="previews/Screenshot (48).png"/>
-<img src="previews/Screenshot (49).png"/>
-<img src="previews/Screenshot (50).png"/>
+<img src="previews/IMG-20250119-WA0005.jpg"/>
+<img src="previews/IMG-20250119-WA0004.jpg"/>
+<img src="previews/IMG-20250119-WA0000.jpg"/>
+<img src="previews/IMG-20250119-WA0006.jpg"/>
+<img src="previews/IMG-20250119-WA0002.jpg"/>
+<img src="previews/IMG-20250119-WA0003.jpg"/>
 
 ## 🤝 Contributing
 
