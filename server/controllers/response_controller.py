@@ -10,8 +10,7 @@ logging.basicConfig(level=logging.ERROR)
 
 class ResponseController:
     def __init__(self):
-        openai.api_key = "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"
-
+        openai.api_key = os.getenv("OPENAI_API_KEY")
 
     def generate_response(self, user_message):
         """
