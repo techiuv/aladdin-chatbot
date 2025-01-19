@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-// import { api } from "../services/api";
-import axios from "axios";
+import api from '../services/api'
 import Navbar from "../components/Navbar";
 import SideBar from "../components/SideBar";
 import UserChats from "../components/ui/UserChats";
@@ -29,10 +28,7 @@ const Home = () => {
 
     try {
       // Fetch bot response
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/api/chat`,
-        { message, email }
-      );
+      const response = await api.post("/api/chat", { message, email });
 
       // Append bot response immutably
       setChats((prevChats) => [
@@ -70,7 +66,7 @@ const Home = () => {
 
       <Title title="Aladin Chat-Bot" />
 
-      <section className="grid bg-dark grid-cols-[100%,100%] overflow-auto scroll-hidden md:grid-cols-[20%,80%]">
+      <section className="grid bg-dark grid-cols-[100%] overflow-auto scroll-hidden md:grid-cols-[20%,80%]">
         <SideBar />
         <main className="h-[100vh] relative">
           <header>

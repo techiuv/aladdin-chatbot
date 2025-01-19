@@ -1,5 +1,9 @@
 const LoadingSpinner = () => {
-  return <div>LoadingSpinner</div>;
+  return (
+    <div className="flex justify-center items-center w-screen h-screen bg-dark">
+      LoadingSpinner
+    </div>
+  );
 };
 
 export default LoadingSpinner;

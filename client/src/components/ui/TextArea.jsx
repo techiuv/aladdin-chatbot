@@ -26,13 +26,13 @@ const TextArea = React.forwardRef((props, ref) => {
   };
 
   return (
-    <div className="absolute bottom-6 left-[50%] -translate-x-1/2 h-auto flex justify-between items-end w-[80%] rounded-3xl px-3 py-2 bg-tertiary">
+    <div className="absolute bottom-4 md:bottom-6 left-[50%] -translate-x-1/2 h-auto flex justify-between items-end w-[90%] md:w-[80%] rounded-3xl px-3 py-2 bg-tertiary">
       <textarea
         ref={textAreaRef}
         name="chats"
         id="chats"
         placeholder="Message Aladdin..."
-        className="w-[90%] p-2 relative h-full scroll-hidden resize-none bg-transparent outline-none placeholder:text-textlight text-white focus:outline focus:bg-transparent border-none max-h-[200px]"
+        className="w-[90%] p-2 relative h-full  resize-none bg-transparent outline-none placeholder:text-textlight text-white text-sm md:text-[1rem] focus:outline focus:bg-transparent border-none max-h-[200px]"
         onKeyUp={handleChange}
         onKeyDown={handleKeyDown} // Add key down listener for Enter/Shift+Enter
         onChange={handleChange}
@@ -48,13 +48,14 @@ const TextArea = React.forwardRef((props, ref) => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
+          className="h-3 w-3 md:h-5 md:w-5"
           viewBox="0 0 16 16"
         >
           <path
             fillRule="evenodd"
             d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"
-            strokeWidth="20px"
+            strokeWidth="50px"
+            
           />
         </svg>
       </button>

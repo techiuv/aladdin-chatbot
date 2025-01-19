@@ -9,18 +9,18 @@ const Settings = () => {
   return (
     <div className="">
       {/* Display user email */}
-      <p className="flex justify-start items-center font-normal text-[1rem] m-1 py-2 border-b border-gray-600">
+      <p className="flex justify-start items-center font-normal text-sm md:text-[1rem] m-1 py-2 border-b border-neutral-600">
         Email: {email}
       </p>
 
       {/* Delete chats button */}
-      <p className="flex justify-between items-center font-normal text-[1rem] m-1 py-2 border-b border-gray-600">
+      <p className="flex justify-between items-center font-normal text-sm md:text-[1rem] m-1 py-2 border-b border-neutral-600">
         Delete all chats
         <DeleteChatsBtn />
       </p>
 
       {/* Logout button */}
-      <p className="flex justify-between items-center font-normal text-[1rem] m-1 py-2">
+      <p className="flex justify-between items-center font-normal text-sm md:text-[1rem] m-1 py-2">
         Logout on this device
         <LogoutBtn />
       </p>

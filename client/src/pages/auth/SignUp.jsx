@@ -1,10 +1,18 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import api from "../../services/api";
+import { useNavigate } from "react-router-dom";
 import PasswordToggler from "../../components/ui/PasswordToggler";
 import Title from "../../components/shared/Title";
 import ProgressBar from "../../components/shared/ProgressBar";
+import AuthBtn from "../../components/auth/AuthBtn";
+import AuthHeading from "../../components/auth/AuthHeading";
+import AuthFooter from "../../components/auth/AuthFooter";
+import {
+  hasAuthTokens,
+  setAuthTokens,
+  removeAuthTokens,
+} from "../../utils/checkAuthTokens";
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -21,14 +29,14 @@ const SignUp = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/auth/register`,
-        {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        }
-      );
+      if (hasAuthTokens()) {
+        removeAuthTokens();
+      }
+      const response = await api.post("/auth/register", {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
 
       navigate("/");
     } catch (err) {
@@ -64,13 +72,11 @@ const SignUp = () => {
       <ProgressBar />
 
       <div className=" bg-secondary flex justify-center items-center flex-col h-screen w-screen ">
-        <h2 className="text-[3rem] capitalize font-bold text-white text-center mb-4">
-          Create Account
-        </h2>
+        <AuthHeading heading={"Create Account"} />
 
         <form
           onSubmit={handleSubmit(handleSignUp)}
-          className="w-[40%] mx-auto p-5 rounded-lg"
+          className="w-[90%] sm:w-[50%] md:w-[40%] mx-auto p-5 rounded-lg"
         >
           {/* Name Input */}
           <div className="mb-4">
@@ -90,7 +96,6 @@ const SignUp = () => {
               </p>
             )}
           </div>
-
           {/* Email Input */}
           <div className="mb-4">
             <input
@@ -105,7 +110,7 @@ const SignUp = () => {
                   message: "Please enter a valid email address",
                 },
               })}
-              className={`w-full p-4 text-sm  mt-2 border border-textlight bg-transparent placeholder:text-textlight rounded-lg focus:outline-none' : ''}`}
+              className={`w-full p-4 text-sm  mt-2 border border-textlight bg-transparent placeholder:text-textlight rounded-lg outline-none focus:outline-none' : ''}`}
             />
             {errors.email && (
               <p className="text-red-500 text-sm my-2 font-normal">
@@ -113,7 +118,6 @@ const SignUp = () => {
               </p>
             )}
           </div>
-
           {/* Password Input */}
           <div className="mb-4">
             <input
@@ -141,32 +145,15 @@ const SignUp = () => {
           </div>
 
           {/* Submit Button */}
-          {loading ? (
-            <div className="flex justify-center">
-              <div className="w-full flex justify-center items-center py-3 uppercase font-medium text-lg bg-white cursor-not-allowed opacity-65 text-secondary rounded-lg focus:outline-none">
-                <div className="w-8 h-8 animate-spin  border-t-transparent border-4 border-secondary rounded-full "></div>
-              </div>
-            </div>
-          ) : (
-            <button
-              type="submit"
-              className="w-full py-3 uppercase flex justify-center items-center font-medium text-lg bg-white text-secondary rounded-lg hover:bg-neutral-200 focus:outline-none"
-              disabled={loading}
-            >
-              Sign Up
-            </button>
-          )}
+          <AuthBtn name={"Sign Up"} isDisabled={loading} isLoading={loading} />
         </form>
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-        <div>
-          <p className="text-lg text-textlight">
-            Already have a account?{" "}
-            <Link to={"/auth/login"} className="text-white underline">
-              Login
-            </Link>
-          </p>
-        </div>
+        <AuthFooter
+          text={"Already have an account? "}
+          route={"login"}
+          routeTo={"Login"}
+        />
       </div>
     </>
   );

@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full min-h-[5vh] flex justify-between items-center px-4 py-1">
-      <p className="text-xl text-neutral-200 cursor-pointer font-medium px-3">
+      <p className="sm:text-xl text-[1rem] text-neutral-200 cursor-pointer font-medium px-3">
         Aladdin
       </p>
 

@@ -3,7 +3,7 @@ import { Typewriter } from "react-simple-typewriter";
 
 const WelcomeMsg = () => (
   <div className="text-center flex justify-center items-center w-full h-full">
-    <p className="capitalize text-white font-bold text-[4rem]">
+    <p className="capitalize text-white font-bold text-3xl md:text-[4rem]">
       <Typewriter
         words={["How can I help you?"]}
         loop={1} // Typing effect runs only once

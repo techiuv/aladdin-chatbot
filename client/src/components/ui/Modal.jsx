@@ -16,7 +16,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-2 h-2 md:w-6 md:h-6"
+              className="w-6 h-6"
               fill="currentColor"
               viewBox="0 0 16 16"
             >

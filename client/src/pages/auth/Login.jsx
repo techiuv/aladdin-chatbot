@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import api from "../../services/api";
 import PasswordToggler from "../../components/ui/PasswordToggler";
 import Title from "../../components/shared/Title";
 import ProgressBar from "../../components/shared/ProgressBar";
+import AuthBtn from "../../components/auth/AuthBtn";
+import AuthHeading from "../../components/auth/AuthHeading";
+import AuthFooter from "../../components/auth/AuthFooter";
 import {
   hasAuthTokens,
   setAuthTokens,
@@ -13,27 +16,23 @@ import {
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  // const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  const [error, setError] = React.useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async (data) => {
     setLoading(true);
     setError("");
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/auth/login`,
-        {
-          email: data.email,
-          password: data.password,
-        }
-      );
+      const response = await api.post("/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
 
       if (hasAuthTokens()) {
         removeAuthTokens();
@@ -47,7 +46,7 @@ const Login = () => {
           refresh_token: response.data.refresh_token,
         });
       }
-
+      // setIsAuthenticated(true);
       navigate("/");
     } catch (err) {
       if (err.response) {
@@ -71,13 +70,11 @@ const Login = () => {
       <Title title="Login - Aladdin" />
       <ProgressBar />
       <div className=" bg-secondary flex justify-center items-center flex-col h-screen w-screen ">
-        <h2 className="text-[3rem] capitalize font-bold text-white text-center mb-4">
-          Welcome Back!
-        </h2>
+        <AuthHeading heading={"Welcome Back! Cheif"} />
 
         <form
           onSubmit={handleSubmit(handleLogin)}
-          className="w-[40%] mx-auto p-5 rounded-lg"
+          className="w-[90%] sm:w-[50%] md:w-[40%] mx-auto p-5 rounded-lg"
         >
           {/* Email Input */}
           <div className="mb-4">
@@ -128,32 +125,15 @@ const Login = () => {
           </div>
 
           {/* Login Button */}
-          {loading ? (
-            <div className="flex justify-center">
-              <div className="w-full flex justify-center items-center py-3 uppercase font-medium text-lg bg-white cursor-not-allowed opacity-65 text-secondary rounded-lg focus:outline-none">
-                <div className="w-8 h-8 animate-spin  border-t-transparent border-4 border-secondary rounded-full "></div>
-              </div>
-            </div>
-          ) : (
-            <button
-              type="submit"
-              className="w-full py-3 uppercase flex justify-center items-center font-medium text-lg bg-white text-secondary rounded-lg hover:bg-neutral-200 focus:outline-none"
-              disabled={loading}
-            >
-              Login
-            </button>
-          )}
+          <AuthBtn name={"Login"} isDisabled={loading} isLoading={loading} />
         </form>
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-        <div>
-          <p className="text-lg text-textlight">
-            Don't have a account?{" "}
-            <Link to={"/auth/register"} className="text-white underline">
-              SignUp
-            </Link>
-          </p>
-        </div>
+        <AuthFooter
+          text={"Dont't have am account? "}
+          route={"register"}
+          routeTo={"Sign Up"}
+        />
       </div>
     </>
   );
